@@ -33,9 +33,10 @@ module Rack
       if env['rack.input'].kind_of?(Tempfile)
         env['rack.input'].extend(EqlFix)
         tempfile = env['rack.input']
+        tempfile.binmode
       else
         tempfile = Tempfile.new('raw-upload.', @tmpdir)
-
+        tempfile.binmode
         # Can't get to produce a test case for this :-(
         env['rack.input'].each do |chunk|
           if chunk.respond_to?(:force_encoding)
